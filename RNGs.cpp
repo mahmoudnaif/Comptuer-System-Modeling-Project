@@ -1,0 +1,88 @@
+#include "RNGs.h"
+#include <algorithm>
+
+std::vector<double> RNGs::LCG(int seed, int a, int c, int m, int count) {
+    std::vector<int> numbers = std::vector<int>(count+1,0);
+    numbers[0] = seed;
+    for(int i = 1; i<= count; i++){
+        numbers[i] = (a*numbers[i-1] + c) % m;
+    }
+    std::vector<double> ansVector = std::vector<double>(count,0);
+
+    for(int i = 1; i<= count; i++){
+        ansVector[i-1] = double(numbers[i]) / m;
+    }
+    return ansVector;
+}
+
+
+
+std::vector<double> RNGs::MCG(int seed, int a, int m, int count) {
+    std::vector<int> numbers = std::vector<int>(count+1,0);
+    numbers[0] = seed;
+    for(int i = 1; i<= count; i++){
+        numbers[i] = (a*numbers[i-1]) % m;
+    }
+    std::vector<double> ansVector = std::vector<double>(count,0);
+
+    for(int i = 1; i<= count; i++){
+        ansVector[i-1] = double(numbers[i]) / m;
+    }
+    return ansVector;
+}
+
+std::vector<double> RNGs::ICG(int seed, int a, int c, int m, int count) {
+    std::vector<int> numbers = std::vector<int>(count+1,0);
+    numbers[0] = seed;
+    for(int i = 1; i<= count; i++){
+        numbers[i] = (a*modInverse(numbers[i-1], m)) % m;
+    }
+    std::vector<double> ansVector = std::vector<double>(count,0);
+
+    for(int i = 1; i<= count; i++){
+        ansVector[i-1] = double(numbers[i]) / m;
+    }
+    return ansVector;
+}
+
+std::vector<double> RNGs::MRG(const std::vector<int>& seeds, const std::vector<int>& coefficients,int q, int m, int count) {
+    
+    std::vector<int> numbers = std::vector<int>(count+q,0);
+
+    std::copy(seeds.begin(), seeds.end(), numbers.begin());
+
+    for(int i = 1; i<= count; i++){
+        numbers[i] = calculatValueOfMCG(numbers,i,q)
+    }
+    std::vector<double> ansVector = std::vector<double>(count,0);
+
+    for(int i = 1; i<= count; i++){
+        ansVector[i-1] = double(numbers[i]) / m;
+    }
+    return ansVector;
+}
+
+int RNGs::calculatValueOfMCG(std::vector<int> numbers,int i,int q){
+
+}
+
+
+int RNGs::modInverse(int x, int m) {
+    int m0 = m, t, q;
+    int a = 0, b = 1;
+
+    while (x > 1) {
+        q = x / m;
+        t = m;
+        m = x % m;
+        x = t;
+        t = a;
+        a = b - q * a;
+        b = t;
+    }
+
+    if (b < 0)
+        b += m0;
+
+    return b;
+}
