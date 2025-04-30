@@ -6,7 +6,7 @@
 class RNGs {
 private:
 int modInverse(int x, int m);
-int calculatValueOfMCG(std::vector<int> numbers,int i,int q);
+int calculateValueOfMRG(const std::vector<int>& numbers,const std::vector<int>& coefficients,int iCurr,int q);
 public:
      // 1. Inversive Congruential Generator
      std::vector<double> ICG(int seed, int a, int c, int m, int count);
@@ -18,7 +18,7 @@ public:
      std::vector<double> LFG(const std::vector<int>& seeds, int j, int k, char operation, int m, int count);
  
      // 4. Mid-Square Method
-     std::vector<double> MSM(int seed, int digits, int count);
+     std::vector<double> MSM(int seed, int count);
  
      // 5. Linear Congruential Generator
      std::vector<double> LCG(int seed, int a, int c, int m, int count);
