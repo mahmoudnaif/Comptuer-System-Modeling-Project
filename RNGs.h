@@ -9,7 +9,7 @@ int modInverse(int x, int m);
 int calculateValueOfMRG(const std::vector<int>& numbers,const std::vector<int>& coefficients,int iCurr,int q);
 public:
      // 1. Inversive Congruential Generator
-     std::vector<double> ICG(int seed, int a, int c, int m, int count);
+     std::vector<double> ICG(int seed, int a, int m, int count);
 
      // 2. Multiple Recursive Generator
      std::vector<double> MRG(const std::vector<int>& seeds, const std::vector<int>& coefficients,int q, int m, int count);

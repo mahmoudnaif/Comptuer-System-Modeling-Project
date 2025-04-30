@@ -32,7 +32,7 @@ std::vector<double> RNGs::MCG(int seed, int a, int m, int count) {
     return ansVector;
 }
 
-std::vector<double> RNGs::ICG(int seed, int a, int c, int m, int count) {
+std::vector<double> RNGs::ICG(int seed, int a, int m, int count) {
     std::vector<int> numbers = std::vector<int>(count+1,0);
     numbers[0] = seed;
     for(int i = 1; i<= count; i++){
