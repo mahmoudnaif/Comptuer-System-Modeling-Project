@@ -25,9 +25,6 @@ public:
  
      // 6. Multiplicative Congruential Generator
      std::vector<double> MCG(int seed, int a, int m, int count);
-
-
-    
 };
 
 #endif // RNGs_H
