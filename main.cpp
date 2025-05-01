@@ -3,7 +3,7 @@
 #include <conio.h>
 #include <cstdlib>
 #include <cmath> 
-
+#include <string>
 using namespace std;
 
 void printVector(const std::vector<double>& ans) {
@@ -14,6 +14,52 @@ void printVector(const std::vector<double>& ans) {
     std::cout << "Press any key to continue...\n";
     _getch(); 
 }
+
+int getPositiveInt(const string& prompt) {
+    int value;
+    while (true) {
+        cout << prompt;
+        cin >> value;
+
+        if (cin.fail() || value <= 0) {
+            cin.clear();  
+            cin.ignore(numeric_limits<streamsize>::max(), '\n');  
+        
+            cout << "Please enter a **positive integer**.\n";
+            cout << "Press any key to continue...\n";
+            _getch(); 
+        } else {
+            return value;
+        }
+    }
+}
+
+char getValidOperation() {
+    char op;
+    while (true) {
+        cout << "Please enter the operation type (+,-,*,^): ";
+        cin >> op;
+        if (op == '+' || op == '-' || op == '*' || op == '^') {
+            return op;
+        }
+        cout << "Invalid operation. Try again.\n";
+    }
+}
+
+vector<int> getPositiveIntVector(int size, const string& label) {
+    vector<int> vec(size);
+    cout << "Please enter " << size << " " << label << " values:\n";
+    for (int i = 0; i < size; ++i) {
+        vec[i] = getPositiveInt(label + " [" + to_string(i + 1) + "]: ");
+    }
+    return vec;
+}
+
+
+
+
+
+
 
 void handleInvalidInput() {
     cin.clear();  
@@ -70,25 +116,12 @@ int main() {
         {
         case LCG:
             {
-                int seed,a,c,m,count;
-                cout << "Please enter the seed value: "; cin >> seed; cout <<endl;
-                cout << "Please enter the a: "; cin >> a; cout <<endl;
-                cout << "Please enter the c: "; cin >> c; cout <<endl;
-                cout << "Please enter the modular value: "; cin >> m; cout <<endl;
-                cout << "Please enter the Number of random values you want: "; cin >> count; cout <<endl;
-                
-                if (cin.fail()) {
-                    handleInvalidInput();
-                    continue;
-                }
+                int seed = getPositiveInt("Please enter the seed value: ");
+                int a = getPositiveInt("Please enter the a: ");
+                int c = getPositiveInt("Please enter the c: ");
+                int m = getPositiveInt("Please enter the m: ");
+                int count = getPositiveInt("Please enter the Number of random values you want: ");
 
-                if(seed <= 0 || a <= 0 || c <= 0 || m <= 0 || count <=0){
-                    cout << "All numbers must be positive\n";
-                    cout << "Press any key to continue...\n";
-                    _getch();
-                    system("cls");
-                    continue;
-                }
                 lastVector = rng.LCG(seed,a,c,m,count);
                 printVector(lastVector);
             }
@@ -97,35 +130,21 @@ int main() {
             break;
         case MCG:
         {
-            int seed,a,m,count;
-            cout << "Please enter the seed value: "; cin >> seed; cout <<endl;
-            cout << "Please enter the a: "; cin >> a; cout <<endl;
-            cout << "Please enter the modular value: "; cin >> m; cout <<endl;
-            cout << "Please enter the Number of random values you want: "; cin >> count; cout <<endl;
+            int seed = getPositiveInt("Please enter the seed value: ");
+            int a = getPositiveInt("Please enter the a: ");
+            int m = getPositiveInt("Please enter the m: ");
+            int count = getPositiveInt("Please enter the Number of random values you want: ");
             
-            if (cin.fail()) {
-                handleInvalidInput();
-                continue;
-            }
-
-            if(seed <= 0 || a <= 0 || m <= 0 || count <=0){
-                cout << "All numbers must be positive\n";
-                cout << "Press any key to continue...\n";
-                _getch(); 
-                system("cls");
-                continue;
-            }
             lastVector = rng.MCG(seed,a,m,count);
             printVector(lastVector);
         }
             break;
         case ICG:
         {
-            int seed,a,m,count;
-            cout << "Please enter the seed value: "; cin >> seed; cout <<endl;
-            cout << "Please enter the a: "; cin >> a; cout <<endl;
-            cout << "Please enter the modular value: "; cin >> m; cout <<endl;
-            cout << "Please enter the Number of random values you want: "; cin >> count; cout <<endl;
+            int seed = getPositiveInt("Please enter the seed value: ");
+            int a = getPositiveInt("Please enter the a: ");
+            int m = getPositiveInt("Please enter the m: ");
+            int count = getPositiveInt("Please enter the Number of random values you want: ");
             
             if (cin.fail()) {
                 handleInvalidInput();
@@ -145,186 +164,62 @@ int main() {
             break;
         case MRG:
         {
-            int q,m,count;
-            cout << "Please enter the number of coefficients: "; cin >> q; cout <<endl;
-            if (cin.fail()) {
-                handleInvalidInput();
-                continue;
-            }
-            if(q<=0){
-                cout << "Number of coefficients numbers must be positive\n";
-                cout << "Press any key to continue...\n";
-                _getch(); 
-                system("cls");
-                continue;
-            }
-            vector<int> coefficients = vector<int>(q,0);
-            vector<int> seeds = vector<int>(q,0);
-            cout << "please enter your Coefficients: \n";
-            bool failed = false;
-            for(int i =0; i<q;i++){
-                cin >> coefficients[i]; 
-                if (cin.fail()) {
-                    handleInvalidInputInLoop();;
-                    failed = true;
-                    break;
-                }
-                if(coefficients[i] <=0){
-                    failed = true;
-                    break;
-                }
-            }
-            if(failed){
-                cout << "Please enter valid intergerss \n";
-                cout << "Press any key to continue...\n";
-                _getch(); 
-                system("cls");
-                continue;
-            }
+            int q = getPositiveInt("Please enter the number of coefficients: ");
+            int m = getPositiveInt("Please enter the m: ");
+            int count = getPositiveInt("Please enter the Number of random values you want: ");
 
-            cout << "please enter your Seeds: \n";
-            for(int i =0; i<q;i++){
-                cin >> seeds[i]; 
-                if (cin.fail()) {
-                    handleInvalidInputInLoop();;
-                    failed = true;
-                    break;
-                }
-                if(seeds[i] <=0){
-                    failed = true;
-                    break;
-                }
-            }
-            if(failed){
-                cout << "Please enter valid intergerss \n";
-                cout << "Press any key to continue...\n";
-                _getch(); 
-                system("cls");
-                continue;
-            }
-
-            cout << "Please enter the modular value: "; cin >> m; cout <<endl;
-            cout << "Please enter the Number of random values you want: "; cin >> count; cout <<endl;
-            
-            if (cin.fail()) {
-                handleInvalidInput();
-                system("cls");
-                continue;
-            }
-
-            if(m <= 0 || count <=0){
-                cout << "All numbers must be positive\n";
-                cout << "Press any key to continue...\n";
-                _getch(); 
-                system("cls");
-                continue;
-            }
+            vector<int> coefficients = getPositiveIntVector(q,"coefficients");
+            vector<int> seeds = getPositiveIntVector(q,"seeds");
+           
             lastVector = rng.MRG(seeds,coefficients,q,m,count);
             printVector(lastVector);
         }
             break;
         case LFG:
         {
-            int j,k,m,count;
-            char operation;
-            cout << "Please enter the number k (also number of seeds): "; cin >> k; cout <<endl;
-            cout << "Please enter the number J: "; cin >> j; cout <<endl;
-            
-            if (cin.fail()) {
-                handleInvalidInput();
-                continue;
-            }
+            int k = getPositiveInt("Please enter the number k (also number of seeds): ");
+            int j = getPositiveInt("Please enter the number J: ");
+            int m = getPositiveInt("Please enter the m: ");
+            int count = getPositiveInt("Please enter the Number of random values you want: ");
+            char operation = getValidOperation();
 
-            if(k<=0 || j<=0){
-                cout << "Numbers numbers must be positive\n";
-                cout << "Press any key to continue...\n";
-                _getch(); 
-                system("cls");
-                continue;
-            }
             if(k < j){
-                cout << "K must always be larger than J!!\n";
-                cout << "Press any key to continue...\n";
-                _getch(); 
-                system("cls");
-                continue;
-            }
-            
-            vector<int> seeds = vector<int>(k,0);
-            cout << "please enter your Seeds: \n";
-            bool failed = false;
-            for(int i =0; i<k;i++){
-                cin >> seeds[i]; 
-                if (cin.fail()) {
-                    handleInvalidInputInLoop();;
-                    failed = true;
-                    break;
-                }
-                if(seeds[i] <=0){
-                    failed = true;
-                    break;
+                
+                while(true){
+                    cout << "K must always be larger than J!!\n";
+                    cout << "Press any key to continue...\n";
+                    _getch(); 
+                    k = getPositiveInt("Please enter the number k (also number of seeds): ");
+                    j = getPositiveInt("Please enter the number J: ");
+                    if (k > j){
+                        break;
+                    }
                 }
             }
-            if(failed){
-                cout << "Seed must be positive\n";
-                cout << "Press any key to continue...\n";
-                _getch(); 
-                system("cls");
-                continue;
-            }
-
-            cout << "Please enter the modular value: "; cin >> m; cout <<endl;
-            cout << "Please enter the Number of random values you want: "; cin >> count; cout <<endl;
             
-            if (cin.fail()) {
-                handleInvalidInput();
-                continue;
-            }
-
-            if(m <= 0 || count <=0){
-                cout << "All numbers must be positive\n";
-                cout << "Press any key to continue...\n";
-                _getch(); 
-                system("cls");
-                continue;
-            }
-            cout << "Please enter the operation type (+,-,*,^): "; cin >> operation; cout <<endl;
-
-            if(operation !='+' && operation !='-' && operation !='*' && operation !='^' ){
-                cout <<"Invalid operation\n";
-                cout << "Press any key to continue...\n";
-                _getch(); 
-                system("cls");
-                continue;
-            }
+            vector<int> seeds = getPositiveIntVector(k,"seeds");;
+        
             lastVector = rng.LFG(seeds,j,k,operation,m,count);
             printVector(lastVector);
         }
             break;
         case MSM:
             {
-                int seed,count;
-                cout << "Please enter the seed value: "; cin >> seed; cout <<endl;
-                cout << "Please enter the Number of random values you want: "; cin >> count; cout <<endl;
-                if (cin.fail()) {
-                    handleInvalidInput();
-                    continue;
-                }
-                
-                if(seed <= 0 || count <=0){
-                    cout << "All numbers must be positive\n";
-                    cout << "Press any key to continue...\n";
-                    _getch(); 
-                    system("cls");
-                    continue;
-                }
+                int seed = getPositiveInt("Please enter the seed value: ");
+                int count = getPositiveInt("Please enter the Number of random values you want: ");
 
                 if( ((seed== 0) ? 1 : static_cast<int>(log10(abs(seed)) + 1)) != 4){
-                    cout << "Seed must always consist of 4 didgits\n";
-                    cout << "Press any key to continue...\n";
-                    _getch(); 
-                    system("cls");
-                    continue;
+                    while(true){
+                        cout << "Seed must always consist of 4 didgits\n";
+                        cout << "Press any key to continue...\n";
+                        _getch(); 
+                        seed = getPositiveInt("Please enter the seed value: ");
+
+                        if(((seed== 0) ? 1 : static_cast<int>(log10(abs(seed)) + 1)) == 4){
+                            break;
+                        }
+                        
+                    }
                 }
                 lastVector = rng.MSM(seed,count);
                 printVector(lastVector);
