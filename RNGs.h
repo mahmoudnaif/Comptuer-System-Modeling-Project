@@ -2,6 +2,8 @@
 #define RNGs_H
 
 #include <vector>
+#include <algorithm>
+#include <string>
 
 class RNGs {
 private:

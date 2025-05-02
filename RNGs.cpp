@@ -1,6 +1,5 @@
 #include "RNGs.h"
-#include <algorithm>
-#include <string>
+
 
 std::vector<double> RNGs::LCG(int seed, int a, int c, int m, int count) {
     std::vector<int> numbers = std::vector<int>(count+1,0);
