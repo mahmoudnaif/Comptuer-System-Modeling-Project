@@ -1,3 +1,6 @@
+#ifndef KSTest_H
+#define KSTest_H
+
 #include <bits/stdc++.h>
 using namespace std;
 
@@ -17,5 +20,5 @@ static void KST(vector<double>& nums, double version);
 
 };
 
-
+#endif 
 
